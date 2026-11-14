@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SOFT LUXE — Premium Service &amp; E-Commerce Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Nunito:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      /* Purple Design System Tokens */
+      --primary: #9C38FF;
+      --primary-dark: #7B1FA2;
+      --secondary: #F5E9FF;
+      --bg-main: #FFFFFF;
+      --text-body: #6F6F6F;
+      --border: #E6E6E6;
+      --black: #000000;
+      --accent-price: #F2647D;
+
+      /* Legacy Aliases (คงคลาสเดิมทั้งหมดให้เปลี่ยนเป็นธีมม่วงสะอาดตาอัตโนมัติ) */
+      --cream: #FFFFFF;
+      --warm-white: #FFFFFF;
+      --blush-pink: #F5E9FF;
+      --dusty-pink: #B975FF;
+      --soft-rose: #9C38FF;
+      --mocha: #6F6F6F;
+      --warm-brown: #1F1F24;
+      --light-beige: #F8F4FC;
+      --text-dark: #1F1F24;
+      --text-muted: #6F6F6F;
+
+      --grad-pink: linear-gradient(135deg, #F5E9FF 0%, #9C38FF 100%);
+      --grad-rose-btn: linear-gradient(135deg, #A84DFF 0%, #9C38FF 100%);
+      --grad-cream: linear-gradient(135deg, #FFFFFF 0%, #F5E9FF 100%);
+      --grad-white-pink: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);
+      --grad-mocha: linear-gradient(135deg, #9C38FF 0%, #6D1BC7 100%);
+
+      --shadow-soft: 0 10px 30px -8px rgba(156, 56, 255, 0.10);
+      --shadow-card: 0 4px 18px -4px rgba(0, 0, 0, 0.05);
+      --shadow-pink: 0 10px 24px -6px rgba(156, 56, 255, 0.32);
+      --radius-card: 20px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+
+      /* Product Card Dynamic Variables (อัปเดตเรียลไทม์จาก Admin Live Preview) */
+      --pc-bg: #FFFFFF;
+      --pc-border: #E6E6E6;
+      --pc-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      --pc-img-radius: 14px;
+      --pc-title-color: #9C38FF;
+      --pc-price-color: #F2647D;
+      --pc-orig-color: #6F6F6F;
+      --pc-btn-bg: #000000;
+      --pc-btn-text: #FFFFFF;
+      --pc-btn-border: #000000;
+      --pc-btn-radius: 9999px;
+      --pc-btn-width: 100%;
+      --pc-btn-height: 42px;
+    }
+
+    body.dark-theme {
+      --bg-main: #121018;
+      --cream: #121018;
+      --warm-white: #1B1726;
+      --blush-pink: #2A1E3D;
+      --light-beige: #231C33;
+      --text-dark: #F4F1FA;
+      --warm-brown: #F4F1FA;
+      --text-muted: #A9A2B8;
+      --mocha: #A9A2B8;
+      --border: #2F2842;
+      --pc-bg: #1B1726;
+      --pc-border: #2F2842;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Kanit', 'Prompt', 'Sarabun', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      line-height: 1.55;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .font-en {
+      font-family: 'Nunito', 'Kanit', sans-serif;
+    }
+
+    /* Custom Background Layer & Particles */
+    #customSiteBgLayer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-size: cover;
+      background-position: center center;
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    #particleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Loading Screen */
+    #customLoadingScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #FFFFFF;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      transition: opacity 0.35s ease;
+    }
+
+    .loader-spinner-purple {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 4px solid var(--secondary);
+      border-top-color: var(--primary);
+      animation: spinLoader 0.85s linear infinite;
+    }
+
+    @keyframes spinLoader {
+      to { transform: rotate(360deg); }
+    }
+
+    .bg-decorations {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(65px);
+      opacity: 0.42;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 340px;
+      height: 340px;
+      top: -90px;
+      right: -80px;
+      background: radial-gradient(circle, #F5E9FF 0%, rgba(245, 233, 255, 0) 72%);
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      top: 38%;
+      left: -140px;
+      background: radial-gradient(circle, #EFE2FF 0%, rgba(239, 226, 255, 0) 72%);
+      animation-delay: -4s;
+    }
+
+    .orb-3 {
+      width: 320px;
+      height: 320px;
+      bottom: 6%;
+      right: -90px;
+      background: radial-gradient(circle, #F5E9FF 0%, rgba(156, 56, 255, 0) 72%);
+      animation-delay: -8s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(18px, 24px) scale(1.06); }
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 16px 18px 110px;
+    }
+
+    @media (min-width: 768px) {
+      .app-container {
+        padding: 24px 28px 120px;
+      }
+    }
+
+    .luxe-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .luxe-glass {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+    }
+
+    body.dark-theme .luxe-glass {
+      background: rgba(27, 23, 38, 0.92);
+    }
+
+    /* 1. HEADER + TOP BADGES + QUEUE STATUS BAR (PRESERVED 100%) */
+    .site-header {
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-pink);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-family: 'Kanit', 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.74rem;
+      font-weight: 500;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mini-badge:hover {
+      background: var(--secondary);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .mini-badge.rose {
+      background: var(--secondary);
+      border-color: rgba(156, 56, 255, 0.25);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+    }
+
+    .dot-live.offline {
+      background: #F59E0B;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .icon-pill-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-pill-btn:hover {
+      background: var(--secondary);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: scale(1.04);
+    }
+
+    .badge-count {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #FFFFFF;
+    }
+
+    .profile-trigger {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 4px 12px 4px 5px;
+      border-radius: var(--radius-pill);
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .profile-trigger:hover {
+      border-color: var(--primary);
+      background: var(--secondary);
+    }
+
+    .avatar-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .queue-status-bar {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .queue-info-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .queue-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: var(--radius-pill);
+      background: var(--light-beige);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .queue-pill strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .btn-queue-dashed {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      border: 1.5px dashed var(--primary);
+      background: var(--secondary);
+      color: var(--primary);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .btn-queue-dashed:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .btn-queue-dashed:hover i {
+      color: #FFFFFF !important;
+    }
+
+    /* 2. BANNER */
+    .banner-section {
+      margin-bottom: 14px;
+    }
+
+    .banner-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 1;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      background: var(--secondary);
+    }
+
+    .banner-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .banner-overlay-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      padding: 5px 13px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 3. ANNOUNCEMENT BAR */
+    .announcement-bar {
+      background: var(--secondary);
+      border: 1px solid rgba(156, 56, 255, 0.22);
+      border-radius: var(--radius-pill);
+      padding: 9px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .announce-tag {
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 11px;
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .marquee-track-wrap {
+      overflow: hidden;
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marqueeLoop 20s linear infinite;
+      color: var(--text-dark);
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes marqueeLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* 4. WELCOME & WALLET */
+    .welcome-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+      align-items: stretch;
+    }
+
+    @media (min-width: 860px) {
+      .welcome-grid {
+        grid-template-columns: 1.25fr 1fr;
+      }
+    }
+
+    .welcome-card {
+      background: var(--grad-white-pink);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .welcome-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--secondary);
+      border: 1px solid rgba(156, 56, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      width: fit-content;
+    }
+
+    .welcome-heading {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.3;
+    }
+
+    .welcome-heading span {
+      color: var(--primary);
+    }
+
+    .welcome-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .welcome-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary-rose {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-pink);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary-rose:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px -6px rgba(156, 56, 255, 0.45);
+    }
+
+    .btn-primary-rose:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-soft-cream {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      color: var(--text-dark);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-soft-cream:hover {
+      background: var(--secondary);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .wallet-stack-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wallet-back-layer {
+      display: none;
+    }
+
+    .wallet-front-card {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      background: var(--grad-mocha);
+      color: #FFFFFF;
+      box-shadow: 0 14px 30px -10px rgba(156, 56, 255, 0.38);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 185px;
+    }
+
+    .wallet-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wallet-chip {
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .wallet-balance-label {
+      font-size: 0.78rem;
+      opacity: 0.88;
+      margin-top: 12px;
+    }
+
+    .wallet-balance-amount {
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .wallet-bottom {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+
+    /* 5. STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    @media (min-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .stat-icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: var(--secondary);
+      border: 1px solid rgba(156, 56, 255, 0.2);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-icon-box.pink {
+      background: var(--secondary);
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .stat-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* 6. QUICK ACTIONS */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .quick-actions-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .quick-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px 10px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.22s ease, border-color 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .quick-card:hover {
+      transform: scale(1.03);
+      border-color: var(--primary);
+    }
+
+    .quick-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--secondary);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .quick-card:hover .quick-icon {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .quick-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* 7. ANALYTICS */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    @media (min-width: 860px) {
+      .analytics-grid {
+        grid-template-columns: 1.5fr 1fr;
+      }
+    }
+
+    .chart-card, .vip-card {
+      padding: 20px;
+    }
+
+    .chart-controls {
+      display: flex;
+      gap: 6px;
+      background: var(--light-beige);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+
+    .chart-tab {
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .chart-tab.active {
+      background: var(--warm-white);
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(156, 56, 255, 0.12);
+    }
+
+    .svg-chart-box {
+      width: 100%;
+      height: 165px;
+      margin-top: 12px;
+    }
+
+    .vip-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 92px;
+      height: 92px;
+      flex-shrink: 0;
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-pct {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+    }
+
+    .ring-sub {
+      font-size: 0.65rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* 8. CATEGORY CARDS (1650 x 500 = 3.3:1 RATIO — REFERENCE IMAGE 2) */
+    .category-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    @media (min-width: 768px) {
+      .category-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .store-cat-card {
+      background: var(--warm-white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .store-cat-card:hover,
+    .store-cat-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px -6px rgba(156, 56, 255, 0.22);
+    }
+
+    .cat-banner-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1650 / 500;
+      border-radius: 13px;
+      overflow: hidden;
+      background: var(--secondary);
+    }
+
+    .cat-banner-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .store-cat-card:hover .cat-banner-box img {
+      transform: scale(1.03);
+    }
+
+    /* Template V.1 Overlay Pill & Checkmark */
+    .cat-v1-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cat-v1-pill {
+      padding: 6px 18px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(156, 56, 255, 0.35);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .cat-v1-check {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(31, 31, 36, 0.55);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .cat-v1-info {
+      padding: 2px 4px;
+    }
+
+    .cat-v1-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .cat-v1-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .cat-v1-meta strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Template V.2 Action Button */
+    .cat-v2-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0 6px;
+    }
+
+    .btn-cat-v2 {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 26px;
+      border-radius: 9999px;
+      border: none;
+      background: linear-gradient(135deg, #A84DFF 0%, #8921F3 100%);
+      color: #FFFFFF;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(156, 56, 255, 0.32);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-cat-v2:hover {
+      transform: scale(1.03);
+    }
+
+    /* STORE TOOLBAR & SEARCH */
+    .store-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 768px) {
+      .store-toolbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 11px 16px 11px 42px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(156, 56, 255, 0.12);
+    }
+
+    .search-box .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      pointer-events: none;
+    }
+
+    .category-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .category-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-pill {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      color: var(--text-dark);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cat-pill.active, .cat-pill:hover {
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 6px 16px -4px rgba(156, 56, 255, 0.35);
+    }
+
+    /* 9. PRODUCT CARD (1500 x 1500 RATIO — REFERENCE IMAGE 1) */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .product-grid.size-small {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 900px) {
+      .product-grid.size-small {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    .product-grid.size-large {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @media (min-width: 768px) {
+      .product-grid.size-large {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .product-card {
+      background: var(--pc-bg);
+      border: 1px solid var(--pc-border);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--pc-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 26px -6px rgba(156, 56, 255, 0.16);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--pc-img-radius);
+      background: var(--secondary);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    /* Top-right pink/red discount badge (%-50%) */
+    .discount-badge-top {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #F2647D;
+      color: #FFFFFF;
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 4px 10px rgba(242, 100, 125, 0.35);
+      z-index: 2;
+    }
+
+    .product-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--primary);
+      font-size: 0.68rem;
+      font-weight: 600;
+      border: 1px solid rgba(156, 56, 255, 0.2);
+      z-index: 2;
+    }
+
+    .fav-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+
+    .fav-btn.active {
+      background: var(--secondary);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .product-body {
+      padding: 12px 2px 2px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .product-title {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--pc-title-color);
+      line-height: 1.3;
+      cursor: pointer;
+    }
+
+    .product-price-label {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .product-price {
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--pc-price-color);
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+
+    .product-orig-price {
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 0.76rem;
+      color: var(--pc-orig-color);
+      text-decoration: line-through;
+      margin-top: 1px;
+      min-height: 16px;
+    }
+
+    /* Full-width Black Pill Purchase Button (สั่งซื้อสินค้า) */
+    .btn-buy-black {
+      margin-top: 10px;
+      width: var(--pc-btn-width);
+      height: var(--pc-btn-height);
+      border-radius: var(--pc-btn-radius);
+      border: 1px solid var(--pc-btn-border);
+      background: var(--pc-btn-bg);
+      color: var(--pc-btn-text);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn-buy-black:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .btn-buy-black:active {
+      transform: scale(0.98);
+    }
+
+    /* Centered Remaining Stock Indicator */
+    .product-stock-center {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    /* FOOTER & FLOATING NAV */
+    .luxe-footer {
+      margin-top: 34px;
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    .footer-links span {
+      cursor: pointer;
+    }
+
+    .floating-nav {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 90;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 12px 32px rgba(156, 56, 255, 0.15);
+    }
+
+    body.dark-theme .floating-nav {
+      background: rgba(27, 23, 38, 0.94);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      box-shadow: 0 6px 14px rgba(156, 56, 255, 0.32);
+    }
+
+    .floating-support {
+      position: fixed;
+      right: 18px;
+      bottom: 84px;
+      z-index: 88;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--warm-white);
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .floating-support:hover {
+      transform: scale(1.07);
+      background: var(--secondary);
+    }
+
+    /* MODALS (PRESERVED 100%) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(18, 16, 24, 0.48);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-panel {
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+      transform: translateY(12px) scale(0.98);
+      transition: transform 0.25s ease;
+      position: relative;
+    }
+
+    .modal-backdrop.open .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .white-surface-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 14px;
+    }
+
+    .profile-hero {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar-lg {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-pink);
+      flex-shrink: 0;
+    }
+
+    .balance-pair-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .balance-mini-box {
+      background: var(--light-beige);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .profile-menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .profile-menu-btn {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .profile-menu-btn:hover {
+      border-color: var(--primary);
+      background: var(--secondary);
+      color: var(--primary);
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #FECDD3;
+      background: #FFF1F2;
+      color: #E11D48;
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .stepper-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      position: relative;
+      padding: 0 6px;
+    }
+
+    .stepper-line {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    .stepper-line-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .step-dot {
+      position: relative;
+      z-index: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--warm-white);
+      border: 2px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .step-dot.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(156, 56, 255, 0.35);
+    }
+
+    .step-dot.done {
+      border-color: var(--primary);
+      background: var(--secondary);
+      color: var(--primary);
+    }
+
+    .channel-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: var(--warm-white);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .channel-option.selected {
+      border-color: var(--primary);
+      background: var(--secondary);
+    }
+
+    .quick-amt-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .amt-chip {
+      padding: 9px 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--light-beige);
+      color: var(--text-dark);
+      font-family: 'Nunito', 'Kanit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .amt-chip.active, .amt-chip:hover {
+      background: var(--grad-rose-btn);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+
+    .luxe-input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      font-family: 'Kanit', 'Prompt', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .luxe-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(156, 56, 255, 0.12);
+    }
+
+    .product-detail-panel {
+      padding: 0;
+      overflow: hidden;
+      background: var(--warm-white);
+    }
+
+    .pd-image-area {
+      width: 100%;
+      height: 250px;
+      background: var(--secondary);
+      position: relative;
+    }
+
+    .pd-image-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pd-pink-sheet {
+      margin-top: -24px;
+      position: relative;
+      z-index: 2;
+      border-top-left-radius: 26px;
+      border-top-right-radius: 26px;
+      background: linear-gradient(180deg, #F5E9FF 0%, #FFFFFF 38%);
+      padding: 22px;
+      border-top: 1px solid rgba(156, 56, 255, 0.2);
+    }
+
+    .toast-box {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      z-index: 2500;
+      background: #1F1F24;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 0.84rem;
+      font-weight: 500;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast-box.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Loading Screen -->
+  <div id="customLoadingScreen">
+    <div class="loader-spinner-purple"></div>
+    <div id="customLoadingText" style="font-size:0.9rem;font-weight:600;color:var(--primary);">กำลังโหลดข้อมูลร้านค้า...</div>
+  </div>
+
+  <!-- Custom Site Background & Particle Canvas -->
+  <div id="customSiteBgLayer" aria-hidden="true"></div>
+  <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div id="luxeToast" class="toast-box">
+    <i data-lucide="sparkles" style="width:16px;height:16px;color:#C084FC;"></i>
+    <span id="luxeToastText">ดำเนินการเรียบร้อยแล้ว</span>
+  </div>
+
+  <div class="app-container" id="publicStorefrontRoot">
+
+    <!-- 1. HEADER + TOP BADGES + QUEUE STATUS BAR (PRESERVED 100%) -->
+    <header class="site-header luxe-glass">
+      <div class="header-top-row">
+        <div class="brand-group">
+          <div class="brand-logo" id="siteBrandLogoBox">
+            <i data-lucide="sparkles" style="width:22px;height:22px;"></i>
+          </div>
+          <div>
+            <div class="brand-title" id="siteBrandTitleText">SOFT LUXE</div>
+            <div class="brand-sub" id="siteBrandSubText">Premium Service &amp; Aesthetic Boutique</div>
+          </div>
+        </div>
+
+        <div class="header-badges">
+          <span class="mini-badge" onclick="showToast('สถานะการเชื่อมต่อ Real-time พร้อมใช้งาน')">
+            <span class="dot-live" id="realtimeDot"></span>
+            <span id="realtimeStatusText">เรียลไทม์พร้อมใช้</span>
+          </span>
+          <span class="mini-badge rose" onclick="openTopupModal()">
+            <i data-lucide="crown" style="width:13px;height:13px;"></i> VIP Purple
+          </span>
+          <span class="mini-badge" onclick="openQueueModal()">
+            <i data-lucide="clock" style="width:13px;height:13px;"></i> ตอบไว 1 นาที
+          </span>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" id="headerAuthBtn" class="btn-primary-rose" style="padding:8px 14px;font-size:0.78rem;" onclick="openAuthModal('login')">
+            <i data-lucide="log-in" style="width:14px;height:14px;"></i>
+            เข้าสู่ระบบ / สมัคร
+          </button>
+
+          <button type="button" class="icon-pill-btn" onclick="openCartModal()" aria-label="ตะกร้าสินค้า">
+            <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+            <span class="badge-count" id="headerCartCount">0</span>
+          </button>
+
+          <button type="button" class="profile-trigger" onclick="openProfileModal()">
+            <div class="avatar-sm" id="headerAvatarChar">G</div>
+            <div style="text-align:left;">
+              <div style="font-size:0.78rem;font-weight:700;color:var(--text-dark);line-height:1.1;" id="headerUserName">ผู้เยี่ยมชม (Guest)</div>
+              <div class="font-en" style="font-size:0.72rem;font-weight:700;color:var(--primary);" id="headerBalanceText">฿0.00</div>
+            </div>
+            <i data-lucide="chevron-down" style="width:15px;height:15px;color:var(--text-muted);"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="queue-status-bar">
+        <div class="queue-info-group">
+          <div class="queue-pill">
+            <i data-lucide="layers" style="width:14px;height:14px;color:var(--primary);"></i>
+            สถานะคิวงาน: <strong id="liveQueueText">ว่างพร้อมรับออเดอร์ (รอ 0 คิว)</strong>
+          </div>
+          <div class="queue-pill">
+            <i data-lucide="check-circle-2" style="width:14px;height:14px;color:var(--primary);"></i>
+            จัดส่งสำเร็จวันนี้ <strong id="liveCompletedText">0 รายการ</strong>
+          </div>
+        </div>
+
+        <button type="button" class="btn-queue-dashed" onclick="openQueueModal()">
+          <i data-lucide="clipboard-list" style="width:15px;height:15px;color:var(--primary);"></i>
+          เช็คคิวงานปัจจุบัน
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. BANNER 2000 x 500 -->
+    <section class="banner-section" aria-label="แบนเนอร์โปรโมชัน">
+      <div class="banner-wrapper">
+        <img
+          id="mainShopBanner"
+          src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2000&h=500&q=85"
+          alt="SOFT LUXE Collection Banner 2000x500"
+        />
+        <div class="banner-overlay-badge">
+          <i data-lucide="sparkles" style="width:13px;height:13px;color:var(--primary);"></i>
+          SOFT LUXE SEASON — ส่วนลดสมาชิกสูงสุด 50%
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar" role="region" aria-label="ประกาศร้านค้า">
+      <span class="announce-tag">
+        <i data-lucide="megaphone" style="width:13px;height:13px;"></i> ประกาศ
+      </span>
+      <div class="marquee-track-wrap">
+        <div class="marquee-track" id="siteAnnouncementText">
+          ยินดีต้อนรับเข้าสู่ร้าน SOFT LUXE ✨ กรุณาเข้าสู่ระบบหรือสมัครสมาชิกเพื่อเริ่มต้นสะสมเครดิตและใช้งานระบบอัตโนมัติ 24 ชม.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. WELCOME SECTION & STACKED WALLET CARD -->
+    <section class="welcome-grid" id="dashboardSection">
+      <div class="welcome-card">
+        <div>
+          <span class="welcome-eyebrow">
+            <i data-lucide="sun" style="width:13px;height:13px;color:var(--primary);"></i>
+            SOFT LUXE MEMBER LOUNGE
+          </span>
+          <h1 class="welcome-heading">สวัสดีตอนค่ำ, <span id="welcomeUserName">ผู้เยี่ยมชม ✨</span></h1>
+          <p class="welcome-desc">
+            จัดการยอดเงิน เช็คคิวงาน และเลือกช้อปบริการพรีเมียมในสไตล์โมเดิร์นได้ครบในที่เดียว
+          </p>
+        </div>
+
+        <div class="welcome-cta-row">
+          <button type="button" class="btn-primary-rose" onclick="openTopupModal()">
+            <i data-lucide="wallet" style="width:16px;height:16px;"></i>
+            เติมเงินเข้าระบบ
+          </button>
+          <button type="button" class="btn-soft-cream" onclick="scrollToStore()">
+            <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i>
+            เลือกดูบริการ &amp; สินค้า
+          </button>
+        </div>
+      </div>
+
+      <div class="wallet-stack-wrap">
+        <div class="wallet-back-layer"></div>
+        <div class="wallet-front-card">
+          <div class="wallet-top">
+            <span class="wallet-chip">SOFT LUXE WALLET</span>
+            <i data-lucide="credit-card" style="width:20px;height:20px;opacity:0.85;"></i>
+          </div>
+          <div>
+            <div class="wallet-balance-label">ยอดเงินคงเหลือพร้อมใช้งาน</div>
+            <div class="wallet-balance-amount" id="cardBalanceText">฿0.00</div>
+          </div>
+          <div class="wallet-bottom">
+            <span>ID: <strong id="walletUserIdText">ยังไม่ได้เข้าสู่ระบบ</strong></span>
+            <span>แต้มสะสม: <strong id="userPointsText">0 Pts</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. DASHBOARD 4 STATISTICS CARDS -->
+    <section class="stats-grid" aria-label="สถิติภาพรวมร้านค้า">
+      <div class="stat-card">
+        <div class="stat-icon-box">
+          <i data-lucide="users" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div class="stat-label">ผู้ใช้งาน</div>
+          <div class="stat-value" id="statUsersCount">0</div>
+          <div class="stat-sub">จำนวนสมาชิกทั้งหมด</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-box pink">
+          <i data-lucide="coins" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div class="stat-label">ยอดเติม</div>
+          <div class="stat-value" id="statTotalTopup">฿0</div>
+          <div class="stat-sub">ยอดเติมเงินสะสม</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-box">
+          <i data-lucide="package" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div class="stat-label">สต็อก</div>
+          <div class="stat-value" id="statStockCount">6</div>
+          <div class="stat-sub">จำนวนบริการพร้อมส่ง</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-box pink">
+          <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div class="stat-label">ยอดขาย</div>
+          <div class="stat-value" id="statSalesCount">0</div>
+          <div class="stat-sub">จำนวนรายการขาย</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. QUICK ACTIONS -->
+    <section aria-label="เมนูด่วน">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i data-lucide="zap" style="width:18px;height:18px;color:var(--primary);"></i>
+          เมนูด่วน (Quick Actions)
+        </h2>
+        <span class="section-subtitle">แตะเพื่อใช้งานทันที</span>
+      </div>
+
+      <div class="quick-actions-grid">
+        <div class="quick-card" onclick="openTopupModal()">
+          <div class="quick-icon"><i data-lucide="plus-circle" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">เติมเงิน</div>
+        </div>
+
+        <div class="quick-card" onclick="openQueueModal()">
+          <div class="quick-icon"><i data-lucide="list-checks" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">เช็คคิวงาน</div>
+        </div>
+
+        <div class="quick-card" onclick="openProfileModal()">
+          <div class="quick-icon"><i data-lucide="user-circle" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">โปรไฟล์</div>
+        </div>
+
+        <div class="quick-card" onclick="openCartModal()">
+          <div class="quick-icon"><i data-lucide="shopping-cart" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">ตะกร้าสินค้า</div>
+        </div>
+
+        <div class="quick-card" onclick="openHistoryModal()">
+          <div class="quick-icon"><i data-lucide="history" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">ประวัติรายการ</div>
+        </div>
+
+        <div class="quick-card" onclick="openAdminModal()">
+          <div class="quick-icon"><i data-lucide="sliders-horizontal" style="width:21px;height:21px;"></i></div>
+          <div class="quick-label">หลังร้าน</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ANALYTICS CHART & VIP PROGRESS RING -->
+    <section class="analytics-grid" aria-label="กราฟสถิติและระดับสมาชิก">
+      <div class="luxe-card chart-card">
+        <div class="section-header" style="margin-bottom:4px;">
+          <div>
+            <h3 class="section-title" style="font-size:0.98rem;">
+              <i data-lucide="bar-chart-3" style="width:17px;height:17px;color:var(--primary);"></i>
+              สถิติการช้อป &amp; รางวัลสมาชิก
+            </h3>
+            <span class="section-subtitle">ภาพรวมยอดการใช้งานรายสัปดาห์</span>
+          </div>
+          <div class="chart-controls">
+            <button type="button" class="chart-tab active" onclick="switchChartMode('week', this)">7 วัน</button>
+            <button type="button" class="chart-tab" onclick="switchChartMode('month', this)">30 วัน</button>
+          </div>
+        </div>
+        <div id="activityChartContainer" class="svg-chart-box"></div>
+      </div>
+
+      <div class="luxe-card vip-card">
+        <h3 class="section-title" style="font-size:0.98rem;">
+          <i data-lucide="award" style="width:17px;height:17px;color:var(--primary);"></i>
+          ระดับสมาชิก Purple VIP
+        </h3>
+        <div class="vip-progress-row">
+          <div class="ring-wrap">
+            <svg width="92" height="92" viewBox="0 0 92 92">
+              <circle cx="46" cy="46" r="38" fill="none" stroke="#F5E9FF" stroke-width="8"></circle>
+              <circle id="vipRingCircle" cx="46" cy="46" r="38" fill="none" stroke="#9C38FF" stroke-width="8"
+                stroke-dasharray="238.76" stroke-dashoffset="238.76" stroke-linecap="round"
+                transform="rotate(-90 46 46)"></circle>
+            </svg>
+            <div class="ring-center">
+              <span class="ring-pct" id="vipPctText">0%</span>
+              <span class="ring-sub">VIP</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.86rem;font-weight:700;color:var(--text-dark);" id="vipGoalText">เติมเงินครบ ฿1,000 รับสิทธิ์ VIP</div>
+            <p style="font-size:0.76rem;color:var(--text-muted);margin-top:4px;">
+              สะสมยอดใช้จ่ายครบตามกำหนดเพื่อปลดล็อกคูปองพิเศษประจำเดือน
+            </p>
+            <button type="button" class="mini-badge rose" style="margin-top:10px;" onclick="openCouponsModal()">
+              <i data-lucide="ticket" style="width:13px;height:13px;"></i> ดูคูปองของฉัน
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. MODERN PURPLE E-COMMERCE STOREFRONT (CATEGORY BANNERS 1650x500 + PRODUCT CARDS 1500x1500) -->
+    <section id="storeSection" aria-label="หน้าร้านค้า">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">
+            <i data-lucide="layers" style="width:18px;height:18px;color:var(--primary);"></i>
+            หมวดหมู่สินค้าแนะนำ (Categories)
+          </h2>
+          <span class="section-subtitle">เลือกหมวดหมู่เพื่อแสดงรายการสินค้าที่เกี่ยวข้อง</span>
+        </div>
+      </div>
+
+      <!-- Category Cards (1650 x 500 = 3.3:1 Ratio — V.1 / V.2 Templates) -->
+      <div class="category-cards-grid" id="categoryCardsGrid"></div>
+
+      <div class="section-header" style="margin-top:10px;">
+        <div>
+          <h2 class="section-title">
+            <i data-lucide="store" style="width:18px;height:18px;color:var(--primary);"></i>
+            รายการสินค้าและบริการ (Products)
+          </h2>
+          <span class="section-subtitle">เลือกชมสินค้าและบริการยอดนิยม แตะที่การ์ดเพื่อดูรายละเอียด</span>
+        </div>
+      </div>
+
+      <div class="store-toolbar">
+        <div class="search-box">
+          <i data-lucide="search" class="search-icon" style="width:17px;height:17px;"></i>
+          <input type="text" id="productSearchInput" placeholder="ค้นหาบริการ แอปพรีเมียม ดูดวง แต่งรูป..." oninput="filterProducts()" />
+        </div>
+
+        <div class="category-pills" id="categoryPills">
+          <button type="button" class="cat-pill active" data-cat="all" onclick="selectCategory('all', this)">ทั้งหมด</button>
+          <button type="button" class="cat-pill" data-cat="tarot" onclick="selectCategory('tarot', this)">ดูดวงไพ่ทาโรต์</button>
+          <button type="button" class="cat-pill" data-cat="apps" onclick="selectCategory('apps', this)">แอปพรีเมียม</button>
+          <button type="button" class="cat-pill" data-cat="edit" onclick="selectCategory('edit', this)">แต่งรูป &amp; สติกเกอร์</button>
+          <button type="button" class="cat-pill" data-cat="topup" onclick="selectCategory('topup', this)">เติมเกม &amp; คอยน์</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- 9. FOOTER -->
+    <footer class="luxe-footer">
+      <div style="font-family:'Kanit',sans-serif;font-weight:800;font-size:1.05rem;color:var(--primary);">
+        SOFT LUXE BOUTIQUE
+      </div>
+      <div class="footer-links">
+        <span onclick="openQueueModal()">เช็คคิวงาน</span>
+        <span onclick="openTopupModal()">เติมเงินอัตโนมัติ</span>
+        <span onclick="openProfileModal()">บัญชีสมาชิก</span>
+        <span onclick="showToast('ติดต่อแอดมินผ่าน LINE Official @softluxe')">ติดต่อแอดมิน</span>
+      </div>
+      <div style="font-size:0.74rem;color:var(--text-muted);">
+        &copy; 2026 SOFT LUXE Purple Design System. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <!-- Floating Support & Bottom Navigation -->
+  <button type="button" class="floating-support" onclick="showToast('แชทกับแอดมิน: พร้อมให้บริการค่ะ ✨')" aria-label="ติดต่อช่วยเหลือ">
+    <i data-lucide="message-circle-heart" style="width:22px;height:22px;"></i>
+  </button>
+
+  <nav class="floating-nav" aria-label="เมนูนำทางหลัก">
+    <button type="button" class="nav-item active" onclick="scrollToTop()">
+      <i data-lucide="layout-dashboard" style="width:16px;height:16px;"></i> หน้าหลัก
+    </button>
+    <button type="button" class="nav-item" onclick="scrollToStore()">
+      <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i> ร้านค้า
+    </button>
+    <button type="button" class="nav-item" onclick="openTopupModal()">
+      <i data-lucide="wallet" style="width:16px;height:16px;"></i> เติมเงิน
+    </button>
+    <button type="button" class="nav-item" onclick="openProfileModal()">
+      <i data-lucide="user" style="width:16px;height:16px;"></i> โปรไฟล์
+    </button>
+  </nav>
+
+  <!-- ==================== MODALS & POPUPS ==================== -->
+
+  <!-- MODAL 1: PROFILE SYSTEM -->
+  <div id="profileModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'profileModal')">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="user-check" style="width:19px;height:19px;color:var(--primary);"></i>
+          โปรไฟล์สมาชิก (Member Profile)
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('profileModal')">
+          <i data-lucide="x" style="width:17px;height:17px;"></i>
+        </button>
+      </div>
+
+      <div class="white-surface-card">
+        <div class="profile-hero">
+          <div class="avatar-lg" id="modalAvatarChar">G</div>
+          <div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--text-dark);" id="modalFullName">ผู้เยี่ยมชม (Guest)</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);" id="modalUserMeta">กรุณาเข้าสู่ระบบเพื่อใช้งานบัญชีสมาชิก</div>
+            <span class="mini-badge rose" style="margin-top:6px;" id="modalAuthStatusBadge">ยังไม่เข้าสู่ระบบ</span>
+          </div>
+        </div>
+
+        <div class="balance-pair-grid">
+          <div class="balance-mini-box">
+            <div style="font-size:0.74rem;color:var(--text-muted);">ยอดเงินคงเหลือ (Balance)</div>
+            <div class="font-en" style="font-size:1.2rem;font-weight:800;color:var(--primary);" id="modalBalanceText">฿0.00</div>
+          </div>
+          <div class="balance-mini-box">
+            <div style="font-size:0.74rem;color:var(--text-muted);">ยอดเติมสะสม (Total)</div>
+            <div class="font-en" style="font-size:1.2rem;font-weight:800;color:var(--text-dark);" id="modalTotalBalanceText">฿0.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-menu-grid">
+        <button type="button" class="profile-menu-btn" onclick="closeModal('profileModal'); openAuthModal('login');">
+          <i data-lucide="key-round" style="width:18px;height:18px;color:var(--primary);"></i>
+          เข้าสู่ระบบ / สมัคร
+        </button>
+        <button type="button" class="profile-menu-btn" onclick="closeModal('profileModal'); openCartModal();">
+          <i data-lucide="shopping-bag" style="width:18px;height:18px;color:var(--primary);"></i>
+          ตะกร้าสินค้า
+        </button>
+        <button type="button" class="profile-menu-btn" onclick="closeModal('profileModal'); openCouponsModal();">
+          <i data-lucide="ticket" style="width:18px;height:18px;color:var(--primary);"></i>
+          คูปองส่วนลด
+        </button>
+        <button type="button" class="profile-menu-btn" onclick="closeModal('profileModal'); openAdminModal();">
+          <i data-lucide="shield-check" style="width:18px;height:18px;color:var(--primary);"></i>
+          Admin Panel
+        </button>
+      </div>
+
+      <button type="button" class="btn-logout" onclick="handleServerLogout()">
+        <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+        ออกจากระบบ (Logout)
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 1.5: CUSTOMER AUTHENTICATION -->
+  <div id="authModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'authModal')">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="sparkles" style="width:19px;height:19px;color:var(--primary);"></i>
+          <span id="authModalTitle">เข้าสู่ระบบสมาชิก SOFT LUXE</span>
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('authModal')">
+          <i data-lucide="x" style="width:17px;height:17px;"></i>
+        </button>
+      </div>
+
+      <div class="white-surface-card">
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button type="button" class="cat-pill active" id="tabLoginBtn" style="flex:1;" onclick="switchAuthTab('login')">เข้าสู่ระบบ</button>
+          <button type="button" class="cat-pill" id="tabRegisterBtn" style="flex:1;" onclick="switchAuthTab('register')">สมัครสมาชิกใหม่</button>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--text-dark);margin-bottom:5px;">ชื่อผู้ใช้ (Username)</label>
+          <input type="text" id="authUsernameInput" class="luxe-input" autocomplete="username" placeholder="ภาษาอังกฤษหรือตัวเลข 3 ตัวขึ้นไป" />
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <label style="font-size:0.78rem;font-weight:600;color:var(--text-dark);">รหัสผ่าน (Password)</label>
+            <span id="pwLengthIndicator" style="font-size:0.72rem;color:var(--text-muted);">0 / ขั้นต่ำ 8 ตัวอักษร</span>
+          </div>
+          <input type="password" id="authPasswordInput" class="luxe-input" autocomplete="new-password" oninput="updatePasswordIndicator()" placeholder="ตั้งรหัสผ่านอย่างน้อย 8 ตัวอักษร" />
+        </div>
+
+        <div id="confirmPasswordGroup" style="margin-bottom:14px;display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <label style="font-size:0.78rem;font-weight:600;color:var(--text-dark);">ยืนยันรหัสผ่านอีกครั้ง (Confirm Password)</label>
+            <span id="pwMatchIndicator" style="font-size:0.72rem;color:var(--text-muted);"></span>
+          </div>
+          <input type="password" id="authConfirmPasswordInput" class="luxe-input" autocomplete="new-password" oninput="updatePasswordIndicator()" placeholder="กรอกรหัสผ่านเดิมซ้ำอีกครั้ง" />
+        </div>
+
+        <button type="button" class="btn-primary-rose" style="width:100%;" id="authSubmitBtn" onclick="submitServerAuth()">
+          เข้าสู่ระบบทันที
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: 5-STEP TOP-UP SYSTEM -->
+  <div id="topupModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'topupModal')">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="wallet" style="width:19px;height:19px;color:var(--primary);"></i>
+          เติมเงินเข้าระบบ (5 ขั้นตอน)
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('topupModal')">
+          <i data-lucide="x" style="width:17px;height:17px;"></i>
+        </button>
+      </div>
+
+      <div class="stepper-bar">
+        <div class="stepper-line"><div class="stepper-line-fill" id="stepperFill"></div></div>
+        <div class="step-dot active" id="stepDot1">1</div>
+        <div class="step-dot" id="stepDot2">2</div>
+        <div class="step-dot" id="stepDot3">3</div>
+        <div class="step-dot" id="stepDot4">4</div>
+        <div class="step-dot" id="stepDot5">5</div>
+      </div>
+
+      <div id="topupStep1" class="topup-step-pane">
+        <div class="white-surface-card">
+          <div style="font-size:0.88rem;font-weight:700;color:var(--text-dark);margin-bottom:10px;">
+            ขั้นตอนที่ 1: เลือกช่องทางการเติมเงิน
+          </div>
+
+          <div class="channel-option selected" data-ch="slip" onclick="selectTopupChannel('slip', this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i data-lucide="qr-code" style="width:20px;height:20px;color:var(--primary);"></i>
+              <div>
+                <div style="font-size:0.86rem;font-weight:600;color:var(--text-dark);">แนบสลิปธนาคาร / PromptPay</div>
+                <div style="font-size:0.74rem;color:var(--text-muted);">ตรวจสอบยอดผ่านระบบอัตโนมัติ</div>
+              </div>
+            </div>
+            <i data-lucide="check-circle-2" style="width:18px;height:18px;color:var(--primary);"></i>
+          </div>
+
+          <div class="channel-option" data-ch="angpao" onclick="selectTopupChannel('angpao', this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i data-lucide="gift" style="width:20px;height:20px;color:var(--text-muted);"></i>
+              <div>
+                <div style="font-size:0.86rem;font-weight:600;color:var(--text-dark);">ซองอั่งเปา TrueMoney</div>
+                <div style="font-size:0.74rem;color:var(--text-muted);">กรอกลิงก์ซองของขวัญ</div>
+              </div>
+            </div>
+            <i data-lucide="circle" style="width:18px;height:18px;color:var(--border);"></i>
+          </div>
+
+          <div class="channel-option" data-ch="code" onclick="selectTopupChannel('code', this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i data-lucide="ticket" style="width:20px;height:20px;color:var(--text-muted);"></i>
+              <div>
+                <div style="font-size:0.86rem;font-weight:600;color:var(--text-dark);">โค้ดเติมเงิน (Gift Code)</div>
+                <div style="font-size:0.74rem;color:var(--text-muted);">ใช้รหัสคูปองเติมเครดิต</div>
+              </div>
+            </div>
+            <i data-lucide="circle" style="width:18px;height:18px;color:var(--border);"></i>
+          </div>
+        </div>
+        <button type="button" class="btn-primary-rose" style="width:100%;" onclick="goTopupStep(2)">ถัดไป</button>
+      </div>
+
+      <div id="topupStep2" class="topup-step-pane" style="display:none;">
+        <div class="white-surface-card">
+          <div style="font-size:0.88rem;font-weight:700;color:var(--text-dark);margin-bottom:8px;">
+            ขั้นตอนที่ 2: ระบุจำนวนเงิน (บาท)
+          </div>
+          <input type="number" id="topupAmountInput" class="luxe-input font-en" value="300" min="10" placeholder="ระบุจำนวนเงิน" />
+          <div class="quick-amt-grid">
+            <button type="button" class="amt-chip" onclick="setTopupAmount(50)">฿50</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(100)">฿100</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(200)">฿200</button>
+            <button type="button" class="amt-chip active" onclick="setTopupAmount(300)">฿300</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(500)">฿500</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(1000)">฿1,000</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(2000)">฿2,000</button>
+            <button type="button" class="amt-chip" onclick="setTopupAmount(5000)">฿5,000</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn-soft-cream" style="flex:1;" onclick="goTopupStep(1)">ย้อนกลับ</button>
+          <button type="button" class="btn-primary-rose" style="flex:2;" onclick="goTopupStep(3)">ถัดไป</button>
+        </div>
+      </div>
+
+      <div id="topupStep3" class="topup-step-pane" style="display:none;">
+        <div class="white-surface-card" style="text-align:center;">
+          <div style="font-size:0.88rem;font-weight:700;color:var(--text-dark);margin-bottom:10px;">
+            ขั้นตอนที่ 3: ข้อมูลการชำระเงิน (<span id="step3AmountLabel" style="color:var(--primary);">฿300</span>)
+          </div>
+          <div style="width:140px;height:140px;margin:0 auto 12px;border-radius:18px;background:var(--secondary);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <i data-lucide="qr-code" style="width:82px;height:82px;color:var(--primary);"></i>
+            <span style="font-size:0.68rem;color:var(--primary);margin-top:4px;font-weight:600;">PromptPay QR</span>
+          </div>
+          <div style="background:var(--light-beige);border-radius:14px;padding:12px;text-align:left;font-size:0.82rem;">
+            <div>ธนาคาร: <strong>กสิกรไทย (KBANK)</strong></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span>เลขบัญชี: <strong class="font-en" id="bankAccNum">148-2-99401-8</strong></span>
+              <button type="button" class="mini-badge rose" onclick="copyBankAccount()">
+                <i data-lucide="copy" style="width:12px;height:12px;"></i> คัดลอก
+              </button>
+            </div>
+            <div style="margin-top:4px;">ชื่อบัญชี: <strong>บจก. ซอฟต์ ลักซ์ สตูดิโอ</strong></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn-soft-cream" style="flex:1;" onclick="goTopupStep(2)">ย้อนกลับ</button>
+          <button type="button" class="btn-primary-rose" style="flex:2;" onclick="goTopupStep(4)">แนบหลักฐานโอนเงิน</button>
+        </div>
+      </div>
+
+      <div id="topupStep4" class="topup-step-pane" style="display:none;">
+        <div class="white-surface-card">
+          <div style="font-size:0.88rem;font-weight:700;color:var(--text-dark);margin-bottom:8px;">
+            ขั้นตอนที่ 4: ยืนยันการชำระเงิน
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">
+            อัปโหลดรูปภาพสลิปโอนเงิน ระบบจะส่งตรวจสอบกับเซิร์ฟเวอร์อย่างปลอดภัย
+          </p>
+          <input type="file" id="slipFileInput" accept="image/*" class="luxe-input" onchange="previewSlipFile(event)" />
+          <div id="slipPreviewBox" style="margin-top:10px;display:none;text-align:center;">
+            <img id="slipPreviewImg" src="" alt="ตัวอย่างสลิป" style="max-height:150px;border-radius:14px;border:1px solid var(--border);" />
+            <div style="font-size:0.75rem;color:#22C55E;margin-top:4px;font-weight:600;">ตรวจสอบไฟล์เรียบร้อย พร้อมส่งยืนยัน</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn-soft-cream" style="flex:1;" onclick="goTopupStep(3)">ย้อนกลับ</button>
+          <button type="button" class="btn-primary-rose" style="flex:2;" onclick="submitTopupVerification()">ส่งตรวจสอบยอดเงิน</button>
+        </div>
+      </div>
+
+      <div id="topupStep5" class="topup-step-pane" style="display:none;">
+        <div class="white-surface-card" style="text-align:center;">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--secondary);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+            <i data-lucide="clock-check" style="width:26px;height:26px;"></i>
+          </div>
+          <div style="font-size:1rem;font-weight:700;color:var(--text-dark);">ส่งคำขอเติมเงินสำเร็จ</div>
+          <div style="font-size:0.76rem;color:var(--text-muted);margin-bottom:12px;">
+            ระบบกำลังตรวจสอบสลิปผ่าน Backend เพื่ออนุมัติยอดเงินเข้ากระเป๋า
+          </div>
+          <div style="background:var(--light-beige);border-radius:14px;padding:12px;text-align:left;font-size:0.8rem;line-height:1.7;">
+            <div>Transaction ID: <strong class="font-en" id="txIdText">TX-000000</strong></div>
+            <div>จำนวนเงิน: <strong class="font-en" style="color:var(--primary);" id="txAmtText">฿0.00</strong></div>
+            <div>วันที่ทำรายการ: <strong id="txDateText">14 พ.ย. 2026</strong></div>
+            <div>สถานะ: <span class="mini-badge rose" id="txStatusBadge">รอระบบ Backend อนุมัติ</span></div>
+          </div>
+        </div>
+        <button type="button" class="btn-primary-rose" style="width:100%;" onclick="closeModal('topupModal'); goTopupStep(1);">เสร็จสิ้น</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: PRODUCT DETAIL -->
+  <div id="productModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'productModal')">
+    <div class="modal-panel product-detail-panel">
+      <button type="button" class="modal-close" style="position:absolute;top:14px;right:14px;z-index:10;" onclick="closeModal('productModal')">
+        <i data-lucide="x" style="width:17px;height:17px;"></i>
+      </button>
+      <div class="pd-image-area">
+        <img id="pdImage" src="" alt="Product Image" />
+      </div>
+      <div class="pd-pink-sheet">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <span class="mini-badge rose" id="pdCategory">หมวดหมู่</span>
+          <span style="font-size:0.8rem;color:var(--text-dark);font-weight:600;">&#9733; 4.9 (128 รีวิว)</span>
+        </div>
+        <h3 id="pdTitle" style="font-size:1.15rem;font-weight:700;color:var(--primary);margin-top:8px;">ชื่อสินค้า</h3>
+        <div id="pdPrice" class="font-en" style="font-size:1.4rem;font-weight:800;color:var(--accent-price);margin-top:4px;">฿0</div>
+        <p id="pdDesc" style="font-size:0.83rem;color:var(--text-muted);margin-top:8px;line-height:1.6;">รายละเอียดสินค้า</p>
+
+        <div style="margin-top:14px;">
+          <div style="font-size:0.78rem;font-weight:600;color:var(--text-dark);margin-bottom:6px;">เลือกแพ็กเกจบริการ</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="cat-pill active" onclick="selectPdOption(this)">แพ็กเกจมาตรฐาน</span>
+            <span class="cat-pill" onclick="selectPdOption(this)">แพ็กเกจด่วนพิเศษ (+฿20)</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:18px;">
+          <button type="button" class="btn-soft-cream" style="flex:1;" id="pdAddCartBtn">
+            <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i> เพิ่มลงตะกร้า
+          </button>
+          <button type="button" class="btn-primary-rose" style="flex:1;" id="pdBuyNowBtn">
+            สั่งซื้อทันที
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: SHOPPING CART -->
+  <div id="cartModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'cartModal')">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="shopping-bag" style="width:19px;height:19px;color:var(--primary);"></i>
+          ตะกร้าสินค้าของคุณ
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('cartModal')">
+          <i data-lucide="x" style="width:17px;height:17px;"></i>
+        </button>
+      </div>
+
+      <div id="cartItemsList"></div>
+
+      <div class="white-surface-card" style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:0.86rem;font-weight:600;color:var(--text-dark);">ยอดชำระรวมทั้งหมด</span>
+        <span class="font-en" id="cartTotalText" style="font-size:1.25rem;font-weight:800;color:var(--primary);">฿0.00</span>
+      </div>
+
+      <button type="button" class="btn-primary-rose" style="width:100%;" onclick="checkoutCart()">
+        <i data-lucide="check-circle" style="width:17px;height:17px;"></i>
+        ยืนยันการสั่งซื้อด้วยกระเป๋าเงิน
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 5: QUEUE STATUS -->
+  <div id="queueModal" class="modal-backdrop" onclick="closeOnBackdrop(event, 'queueModal')">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="clipboard-list" style="width:19px;height:19px;color:var(--primary);"></i>
+          ตารางเช็คคิวงานเรียลไทม์
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('queueModal')">
+          <i data-lucide="x" style="width:17px;height:17px;"></i>
+        </button>
+      </div>
+
+      <div id="liveQueueListBox">
+        <div class="white-surface-card" style="text-align:center;color:var(--text-muted);font-size:0.84rem;">
+          ขณะนี้ไม่มีคิวค้าง พร้อมรับออเดอร์ทันที ✨
+        </div>
+      </div>
+    </div>
+  </div>
